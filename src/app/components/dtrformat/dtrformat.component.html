@@ -35,12 +35,31 @@
         <form>
           <div class="mb-3">
             <label for="selectName" class="form-label">Select Name</label>
-            <select class="form-select" id="selectName">
-              <option selected>Choose...</option>
-              <option value="1">Name 1</option>
-              <option value="2">Name 2</option>
-              <option value="3">Name 3</option>
-            </select>
+            <div class="dropdown">
+              <button class="btn btn-white border shadow-sm dropdown-toggle w-100 text-start" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Choose...
+              </button>
+              <ul class="dropdown-menu w-100 p-3" aria-labelledby="dropdownMenuButton">
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="1" id="name1">
+                    <label class="form-check-label" for="name1">Name 1</label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="2" id="name2">
+                    <label class="form-check-label" for="name2">Name 2</label>
+                  </div>
+                </li>
+                <li>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="3" id="name3">
+                    <label class="form-check-label" for="name3">Name 3</label>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="mb-3">
             <label for="dateRange" class="form-label">Date Range</label>
