@@ -12,7 +12,7 @@
       <div class="card-body p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="mb-0" style="font-weight: 500;">DTR Format</h5>
-          <button class="btn btn-link text-dark p-0" style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
+          <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
         </div>
   
         <!-- No Record Found -->
@@ -21,4 +21,38 @@
         </div>
       </div>
     </div>
+</div>
+
+<!-- Report Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="selectName" class="form-label">Select Name</label>
+            <select class="form-select" id="selectName">
+              <option selected>Choose...</option>
+              <option value="1">Name 1</option>
+              <option value="2">Name 2</option>
+              <option value="3">Name 3</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="dateRange" class="form-label">Date Range</label>
+            <input type="date" class="form-control mb-2" id="startDate" placeholder="Start Date">
+            <input type="date" class="form-control" id="endDate" placeholder="End Date">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Generate</button>
+      </div>
+    </div>
+  </div>
 </div>
