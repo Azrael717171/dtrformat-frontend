@@ -25,6 +25,10 @@ export class DtrformatComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.loadReports(); // Fetch reports when component loads
+  }
+
   get selectedNames(): FormArray {
     return this.reportForm.get('selectedNames') as FormArray;
   }
@@ -60,6 +64,12 @@ export class DtrformatComponent {
     this.reportService.generateReport(reportData).subscribe(response => {
       console.log('Report generated:', response);
       this.generatedReports.push(response.report);
+    });
+  }
+
+  loadReports(): void {
+    this.reportService.getReports().subscribe(reports => {
+      this.generatedReports = reports;
     });
   }
 } 
