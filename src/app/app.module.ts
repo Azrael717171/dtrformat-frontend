@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DtrformatComponent } from './components/dtrformat/dtrformat.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DtrformatComponent
   ],
   imports: [
     BrowserModule,
