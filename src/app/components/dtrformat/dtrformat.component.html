@@ -2,17 +2,13 @@
     <!-- Title -->
     <h2 class="text-center mb-4" style="font-weight: 600;">Reports</h2>
   
-    <!-- Toggle Button -->
-    <div class="d-flex justify-content-center mb-3">
-      <button class="btn btn-white border shadow-sm px-4 py-2" style="border-radius: 8px;">DTR Format</button>
-    </div>
-  
     <!-- Report Card -->
     <div class="card border-0 shadow-sm rounded" style="border-radius: 8px;">
       <div class="card-body p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5 class="mb-0" style="font-weight: 500;">DTR Format</h5>
-          <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal" style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
+          <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
+            style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
         </div>
   
         <!-- No Record Found -->
@@ -21,57 +17,63 @@
         </div>
       </div>
     </div>
-</div>
-
-<!-- Report Modal -->
-<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="selectName" class="form-label">Select Name</label>
-            <div class="dropdown">
-              <button class="btn btn-white border shadow-sm dropdown-toggle w-100 text-start" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                Choose...
-              </button>
-              <ul class="dropdown-menu w-100 p-3" aria-labelledby="dropdownMenuButton">
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="name1">
-                    <label class="form-check-label" for="name1">Name 1</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="2" id="name2">
-                    <label class="form-check-label" for="name2">Name 2</label>
-                  </div>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="3" id="name3">
-                    <label class="form-check-label" for="name3">Name 3</label>
-                  </div>
-                </li>
-              </ul>
+  </div>
+  
+  <!-- Report Modal -->
+  <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="reportForm">
+            <div class="mb-3">
+              <label class="form-label">Select Name</label>
+              <div class="dropdown">
+                <button class="btn btn-white border shadow-sm dropdown-toggle w-100 text-start" type="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Choose...
+                </button>
+                <ul class="dropdown-menu w-100 p-3">
+                  <!-- Select All Option -->
+                  <li>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" formControlName="selectAll"
+                        (change)="onSelectAll($event)">
+                      <label class="form-check-label"><strong>Select All</strong></label>
+                    </div>
+                  </li>
+                  <hr>
+                  <!-- Individual Options -->
+                  <li *ngFor="let name of names">
+                    <div class="form-check">
+                      <input class="form-check-input"
+                        type="checkbox"
+                        [checked]="selectedNames.value.includes(name.id)"
+                        (change)="onIndividualChange($event, name.id)">
+                      <label class="form-check-label">{{ name.name }}</label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div class="mb-3">
-            <label for="dateRange" class="form-label">Date Range</label>
-            <input type="date" class="form-control mb-2" id="startDate" placeholder="Start Date">
-            <input type="date" class="form-control" id="endDate" placeholder="End Date">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Generate</button>
+  
+            <!-- Date Range Inputs -->
+            <div class="mb-3">
+              <label class="form-label">Date Range</label>
+              <input type="date" class="form-control mb-2" placeholder="Start Date">
+              <input type="date" class="form-control" placeholder="End Date">
+            </div>
+          </form>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="generateReport()">Generate</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  
