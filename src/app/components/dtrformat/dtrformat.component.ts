@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { ReportService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-dtrformat',
@@ -13,29 +14,29 @@ export class DtrformatComponent {
     { id: 2, name: 'Name 2' },
     { id: 3, name: 'Name 3' }
   ];
+  generatedReports: any[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private reportService: ReportService) {
     this.reportForm = this.fb.group({
       selectAll: [false],
-      selectedNames: this.fb.array([])
+      selectedNames: this.fb.array([]),
+      startDate: [''],
+      endDate: ['']
     });
   }
 
-  // Getter for FormArray
   get selectedNames(): FormArray {
     return this.reportForm.get('selectedNames') as FormArray;
   }
 
-  // Handle Select All
   onSelectAll(event: any): void {
     const checked = event.target.checked;
-    this.selectedNames.clear(); // Clear all selections first
+    this.selectedNames.clear();
     if (checked) {
       this.names.forEach(name => this.selectedNames.push(this.fb.control(name.id)));
     }
   }
 
-  // Handle individual selection
   onIndividualChange(event: any, nameId: number): void {
     const checked = event.target.checked;
     if (checked) {
@@ -45,13 +46,20 @@ export class DtrformatComponent {
       this.selectedNames.removeAt(index);
     }
 
-    // Sync "Select All" checkbox
     const selectAllCheckbox = this.reportForm.get('selectAll');
     selectAllCheckbox?.setValue(this.selectedNames.length === this.names.length, { emitEvent: false });
   }
 
-  // Handle form submission
   generateReport(): void {
-    console.log('Selected Names:', this.selectedNames.value);
+    const reportData = {
+      selectedNames: this.selectedNames.value,
+      startDate: this.reportForm.get('startDate')?.value,
+      endDate: this.reportForm.get('endDate')?.value
+    };
+
+    this.reportService.generateReport(reportData).subscribe(response => {
+      console.log('Report generated:', response);
+      this.generatedReports.push(response.report);
+    });
   }
-}
+} 

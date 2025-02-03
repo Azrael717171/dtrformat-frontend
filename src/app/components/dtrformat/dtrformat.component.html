@@ -1,8 +1,5 @@
 <div class="container mt-5">
-    <!-- Title -->
     <h2 class="text-center mb-4" style="font-weight: 600;">Reports</h2>
-  
-    <!-- Report Card -->
     <div class="card border-0 shadow-sm rounded" style="border-radius: 8px;">
       <div class="card-body p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -10,16 +7,35 @@
           <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
             style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
         </div>
-  
-        <!-- No Record Found -->
-        <div class="border p-3 text-center" style="font-weight: 600; color: #000; border-radius: 4px;">
-          No Record Found
+        <div *ngIf="generatedReports.length > 0; else noRecord">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Generated At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let report of generatedReports">
+                <td>{{ report.selectedNames.join(', ') }}</td>
+                <td>{{ report.startDate | date }}</td>
+                <td>{{ report.endDate | date }}</td>
+                <td>{{ report.createdAt | date:'short' }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <ng-template #noRecord>
+          <div class="border p-3 text-center" style="font-weight: 600; color: #000; border-radius: 4px;">
+            No Record Found
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>
   
-  <!-- Report Modal -->
   <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -37,7 +53,6 @@
                   Choose...
                 </button>
                 <ul class="dropdown-menu w-100 p-3">
-                  <!-- Select All Option -->
                   <li>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" formControlName="selectAll"
@@ -46,12 +61,9 @@
                     </div>
                   </li>
                   <hr>
-                  <!-- Individual Options -->
                   <li *ngFor="let name of names">
                     <div class="form-check">
-                      <input class="form-check-input"
-                        type="checkbox"
-                        [checked]="selectedNames.value.includes(name.id)"
+                      <input class="form-check-input" type="checkbox" [checked]="selectedNames.value.includes(name.id)"
                         (change)="onIndividualChange($event, name.id)">
                       <label class="form-check-label">{{ name.name }}</label>
                     </div>
@@ -59,21 +71,17 @@
                 </ul>
               </div>
             </div>
-  
-            <!-- Date Range Inputs -->
             <div class="mb-3">
               <label class="form-label">Date Range</label>
-              <input type="date" class="form-control mb-2" placeholder="Start Date">
-              <input type="date" class="form-control" placeholder="End Date">
+              <input type="date" class="form-control mb-2" formControlName="startDate">
+              <input type="date" class="form-control" formControlName="endDate">
             </div>
           </form>
         </div>
-  
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" (click)="generateReport()">Generate</button>
+          <button type="button" class="btn btn-primary" (click)="generateReport()" data-bs-dismiss="modal">Generate</button>
         </div>
       </div>
     </div>
   </div>
-  
