@@ -9,6 +9,12 @@ import { Report } from 'src/app/models/report.model'; // Importing the Report in
   styleUrls: ['./dtrformat.component.css']
 })
 export class DtrformatComponent {
+confirmDelete(arg0: string) {
+throw new Error('Method not implemented.');
+}
+closeReportModal() {
+throw new Error('Method not implemented.');
+}
   reportForm: FormGroup;
   names = [
     { id: 1, name: 'Name 1' },
