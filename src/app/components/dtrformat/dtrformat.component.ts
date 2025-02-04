@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReportService } from 'src/app/services/report.service';
+import { Report } from 'src/app/models/report.model'; // Importing the Report interface
 
 @Component({
   selector: 'app-dtrformat',
@@ -14,14 +15,16 @@ export class DtrformatComponent {
     { id: 2, name: 'Name 2' },
     { id: 3, name: 'Name 3' }
   ];
-  generatedReports: any[] = [];
+  generatedReports: Report[] = []; // Updated to use Report type
+  selectedReport: Report | null = null;
+  errorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private reportService: ReportService) {
     this.reportForm = this.fb.group({
       selectAll: [false],
       selectedNames: this.fb.array([]),
-      startDate: [''],
-      endDate: ['']
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required]
     });
   }
 
@@ -60,36 +63,59 @@ export class DtrformatComponent {
   }
 
   generateReport(): void {
+    if (this.reportForm.invalid) {
+      this.errorMessage = 'Please fill in all required fields.';
+      return;
+    }
+
     const reportData = {
       selectedNames: this.selectedNames.value,
       startDate: this.reportForm.get('startDate')?.value,
       endDate: this.reportForm.get('endDate')?.value
     };
 
-    this.reportService.generateReport(reportData).subscribe(response => {
-      console.log('Report generated:', response);
-      this.generatedReports.push(response.report);
-    });
+    this.reportService.generateReport(reportData).subscribe(
+      response => {
+        console.log('Report generated:', response);
+        this.generatedReports.push(response.report);
+        this.errorMessage = null; // Clear any previous error message
+      },
+      error => {
+        this.errorMessage = 'Error generating report. Please try again.';
+        console.error('Error generating report:', error);
+      }
+    );
   }
 
   loadReports(): void {
-    this.reportService.getReports().subscribe(reports => {
-      this.generatedReports = reports;
-    });
+    this.reportService.getReports().subscribe(
+      reports => {
+        this.generatedReports = reports;
+        this.errorMessage = null; // Clear any previous error message
+      },
+      error => {
+        this.errorMessage = 'Error loading reports. Please try again.';
+        console.error('Error loading reports:', error);
+      }
+    );
+  }
+
+  viewReport(report: Report): void {
+    this.selectedReport = report;
   }
 
   deleteReport(reportId: string): void {
     if (confirm('Are you sure you want to delete this report?')) {
       this.reportService.deleteReport(reportId).subscribe(
         () => {
-          // Remove the deleted report from the local array
           this.generatedReports = this.generatedReports.filter(report => report._id !== reportId);
           console.log('Report deleted successfully');
         },
         error => {
+          this.errorMessage = 'Error deleting report. Please try again.';
           console.error('Error deleting report:', error);
         }
       );
     }
   }
-} 
+}
