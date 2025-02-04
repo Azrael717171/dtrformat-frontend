@@ -17,4 +17,8 @@ export class ReportService {
   getReports(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
+  
+  deleteReport(reportId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${reportId}`);
+  }
 }

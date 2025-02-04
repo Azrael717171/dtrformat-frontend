@@ -24,6 +24,11 @@
                 <td>{{ report.startDate | date }}</td>
                 <td>{{ report.endDate | date }}</td>
                 <td>{{ report.createdAt | date:'short' }}</td>
+                <td>
+                  <button (click)="deleteReport(report._id)" class="btn btn-danger btn-sm">
+                    Delete
+                  </button>
+                </td>
               </tr>
             </ng-container>
           </tbody>

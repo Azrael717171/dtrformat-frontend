@@ -26,13 +26,13 @@ export class DtrformatComponent {
   }
 
   ngOnInit(): void {
-    this.loadReports(); // Fetch reports when component loads
+    this.loadReports();
   }
 
   getNameById(id: number): string {
     const found = this.names.find(name => name.id === id);
     return found ? found.name : 'Unknown';
-  }  
+  }
 
   get selectedNames(): FormArray {
     return this.reportForm.get('selectedNames') as FormArray;
@@ -76,5 +76,20 @@ export class DtrformatComponent {
     this.reportService.getReports().subscribe(reports => {
       this.generatedReports = reports;
     });
+  }
+
+  deleteReport(reportId: string): void {
+    if (confirm('Are you sure you want to delete this report?')) {
+      this.reportService.deleteReport(reportId).subscribe(
+        () => {
+          // Remove the deleted report from the local array
+          this.generatedReports = this.generatedReports.filter(report => report._id !== reportId);
+          console.log('Report deleted successfully');
+        },
+        error => {
+          console.error('Error deleting report:', error);
+        }
+      );
+    }
   }
 } 
