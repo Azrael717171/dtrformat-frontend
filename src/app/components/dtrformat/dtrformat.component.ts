@@ -29,6 +29,11 @@ export class DtrformatComponent {
     this.loadReports(); // Fetch reports when component loads
   }
 
+  getNameById(id: number): string {
+    const found = this.names.find(name => name.id === id);
+    return found ? found.name : 'Unknown';
+  }  
+
   get selectedNames(): FormArray {
     return this.reportForm.get('selectedNames') as FormArray;
   }

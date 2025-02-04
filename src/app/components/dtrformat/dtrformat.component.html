@@ -1,40 +1,43 @@
 <div class="container mt-5">
-    <h2 class="text-center mb-4" style="font-weight: 600;">Reports</h2>
-    <div class="card border-0 shadow-sm rounded" style="border-radius: 8px;">
-      <div class="card-body p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="mb-0" style="font-weight: 500;">DTR Format</h5>
-          <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
-            style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
-        </div>
-        <div *ngIf="generatedReports.length > 0; else noRecord">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Generated At</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let report of generatedReports">
-                <td>{{ report.selectedNames.join(', ') }}</td>
+  <h2 class="text-center mb-4" style="font-weight: 600;">Reports</h2>
+  <div class="card border-0 shadow-sm rounded" style="border-radius: 8px;">
+    <div class="card-body p-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0" style="font-weight: 500;">DTR Format</h5>
+        <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
+          style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
+      </div>
+      <div *ngIf="generatedReports.length > 0; else noRecord">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Generated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let report of generatedReports">
+              <tr *ngFor="let nameId of report.selectedNames">
+                <td>{{ getNameById(nameId) }}</td>
                 <td>{{ report.startDate | date }}</td>
                 <td>{{ report.endDate | date }}</td>
                 <td>{{ report.createdAt | date:'short' }}</td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-        <ng-template #noRecord>
-          <div class="border p-3 text-center" style="font-weight: 600; color: #000; border-radius: 4px;">
-            No Record Found
-          </div>
-        </ng-template>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
+      <ng-template #noRecord>
+        <div class="border p-3 text-center" style="font-weight: 600; color: #000; border-radius: 4px;">
+          No Record Found
+        </div>
+      </ng-template>
     </div>
   </div>
+</div>
+
   
   <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
     <div class="modal-dialog">
