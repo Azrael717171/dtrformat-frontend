@@ -20,8 +20,8 @@
           </thead>
           <tbody>
             <ng-container *ngFor="let report of generatedReports">
-              <tr *ngFor="let nameId of report.selectedNames">
-                <td>{{ getNameById(nameId) }}</td>
+              <tr>
+                <td>{{ getNameById(report.selectedName) }}</td>
                 <td>{{ report.startDate | date }}</td>
                 <td>{{ report.endDate | date }}</td>
                 <td>{{ report.createdAt | date:'short' }}</td>
@@ -29,13 +29,13 @@
                   <button (click)="viewReport(report)" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewReportModal">
                     View
                   </button>
-                  <button (click)="deleteReport(report._id)" class="btn btn-danger btn-sm">
+                  <button (click)="deleteReport(report._id!)" class="btn btn-danger btn-sm">
                     Delete
                   </button>
                 </td>
               </tr>
             </ng-container>
-          </tbody>
+          </tbody>          
         </table>
       </div>
       <ng-template #noRecord>
@@ -56,7 +56,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" *ngIf="selectedReport">
-        <p><strong>Name:</strong> {{ getNameById(selectedReport.selectedNames[0]) }}</p>
+        <p><strong>Name:</strong> {{ getNameById(selectedReport.selectedName) }}</p>
         <p><strong>Start Date:</strong> {{ selectedReport.startDate | date }}</p>
         <p><strong>End Date:</strong> {{ selectedReport.endDate | date }}</p>
         <p><strong>Generated At:</strong> {{ selectedReport.createdAt | date:'short' }}</p>

@@ -73,17 +73,17 @@ throw new Error('Method not implemented.');
       this.errorMessage = 'Please fill in all required fields.';
       return;
     }
-
+  
     const reportData = {
       selectedNames: this.selectedNames.value,
       startDate: this.reportForm.get('startDate')?.value,
       endDate: this.reportForm.get('endDate')?.value
     };
-
+  
     this.reportService.generateReport(reportData).subscribe(
       response => {
-        console.log('Report generated:', response);
-        this.generatedReports.push(response.report);
+        console.log('Reports generated:', response.reports);
+        this.generatedReports.push(...response.reports);  // Append multiple reports
         this.errorMessage = null; // Clear any previous error message
       },
       error => {
@@ -92,6 +92,7 @@ throw new Error('Method not implemented.');
       }
     );
   }
+  
 
   loadReports(): void {
     this.reportService.getReports().subscribe(
