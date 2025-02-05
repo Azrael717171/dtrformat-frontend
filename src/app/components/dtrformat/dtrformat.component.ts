@@ -21,6 +21,10 @@ throw new Error('Method not implemented.');
     { id: 2, name: 'Name 2' },
     { id: 3, name: 'Name 3' }
   ];
+  searchTerm: string = '';               // Search term entered by the user
+  filteredReports: any[] = []; 
+  currentIndex: number = 0;  // To keep track of the current report index
+  currentReport: any;        // To store the currently displayed report
   generatedReports: Report[] = []; // Updated to use Report type
   selectedReport: Report | null = null;
   errorMessage: string | null = null;
@@ -110,6 +114,49 @@ throw new Error('Method not implemented.');
   viewReport(report: Report): void {
     this.selectedReport = report;
   }
+
+  viewAllReports(): void {
+    this.filteredReports = [...this.generatedReports];  // Initialize with all reports
+    if (this.generatedReports.length > 0) {
+      this.currentIndex = 0;  // Start from the first report
+      this.currentReport = this.generatedReports[this.currentIndex];// Logic to display all reports or navigate to a detailed view page
+    console.log('View All Reports clicked');
+    // You can implement navigation or modal logic here
+  }
+}
+
+// Filter reports based on the search term
+filterReports(): void {
+  if (this.searchTerm.trim() === '') {
+    this.filteredReports = [...this.generatedReports];  // Reset if no search term
+  } else {
+    const search = this.searchTerm.toLowerCase();
+    this.filteredReports = this.generatedReports.filter(report =>
+      this.getNameById(report.selectedName).toLowerCase().includes(search)
+    );
+  }
+
+  // Reset to first report after filtering
+  this.currentIndex = 0;
+  this.currentReport = this.filteredReports.length > 0 ? this.filteredReports[0] : null;
+}
+
+  // Navigate to the next report
+nextReport(): void {
+  if (this.currentIndex < this.generatedReports.length - 1) {
+    this.currentIndex++;
+    this.currentReport = this.generatedReports[this.currentIndex];
+  }
+}
+
+// Navigate to the previous report
+previousReport(): void {
+  if (this.currentIndex > 0) {
+    this.currentIndex--;
+    this.currentReport = this.generatedReports[this.currentIndex];
+  }
+}
+  
 
   deleteReport(reportId: string): void {
     if (confirm('Are you sure you want to delete this report?')) {

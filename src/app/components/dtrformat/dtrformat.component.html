@@ -4,28 +4,36 @@
     <div class="card-body p-4">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0" style="font-weight: 500;">DTR Format</h5>
-        <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
-          style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
+        <div>
+          <!-- View All Button -->
+          <button class="btn btn-primary me-2" (click)="viewAllReports()" data-bs-toggle="modal" data-bs-target="#viewAllReportsModal">
+            View All
+          </button>
+      
+          <!-- Plus Button -->
+          <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
+            style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
+        </div>
       </div>
       <div *ngIf="generatedReports.length > 0; else noRecord">
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Generated At</th>
-              <th>Actions</th> <!-- Added Actions column -->
+              <th >Name</th>
+              <th style="display: none;">Start Date</th>
+              <th style="display: none;">End Date</th>
+              <th style="display: none;">Generated At</th>
+              <th >Actions</th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngFor="let report of generatedReports">
               <tr>
                 <td>{{ getNameById(report.selectedName) }}</td>
-                <td>{{ report.startDate | date }}</td>
-                <td>{{ report.endDate | date }}</td>
-                <td>{{ report.createdAt | date:'short' }}</td>
-                <td>
+                <td style="display: none;">{{ report.startDate | date }}</td>
+                <td style="display: none;">{{ report.endDate | date }}</td>
+                <td style="display: none;">{{ report.createdAt | date:'short' }}</td>
+                <td> 
                   <button (click)="viewReport(report)" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewReportModal">
                     View
                   </button>
@@ -35,7 +43,7 @@
                 </td>
               </tr>
             </ng-container>
-          </tbody>          
+          </tbody>
         </table>
       </div>
       <ng-template #noRecord>
@@ -119,3 +127,46 @@
       </div>
     </div>
   </div>
+
+<!-- View All Reports Modal -->
+<div class="modal fade" id="viewAllReportsModal" tabindex="-1" aria-labelledby="viewAllReportsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-between align-items-center">
+        <h5 class="modal-title mb-0" id="viewAllReportsModalLabel">Report Details</h5>
+        
+        <!-- Search/Filter Input -->
+        <input type="text" class="form-control w-50 ms-3" placeholder="Filter..." [(ngModel)]="searchTerm" (input)="filterReports()" />
+        
+        <button type="button" class="btn-close ms-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body" *ngIf="currentReport">
+        <table class="table table-striped table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Generated At</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ getNameById(currentReport.selectedName) }}</td>
+              <td>{{ currentReport.startDate | date }}</td>
+              <td>{{ currentReport.endDate | date }}</td>
+              <td>{{ currentReport.createdAt | date:'short' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="modal-footer d-flex justify-content-between">
+        <button type="button" class="btn btn-secondary" (click)="previousReport()" [disabled]="currentIndex === 0">Previous</button>
+        <button type="button" class="btn btn-primary" (click)="nextReport()" [disabled]="currentIndex === filteredReports.length - 1">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
