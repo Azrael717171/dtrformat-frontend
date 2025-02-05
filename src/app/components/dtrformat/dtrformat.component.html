@@ -1,59 +1,86 @@
 <div class="container mt-5">
-  <h2 class="text-center mb-4" style="font-weight: 600;">Reports</h2>
-  <div class="card border-0 shadow-sm rounded" style="border-radius: 8px;">
+  <!-- Title -->
+  <h2 class="text-center mb-4 fw-semibold">Reports</h2>
+
+  <!-- Card Wrapper -->
+  <div class="card shadow-sm rounded-3 border-0">
     <div class="card-body p-4">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0" style="font-weight: 500;">DTR Format</h5>
-        <div>
+      
+      <!-- Header with Title and Action Buttons -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="fw-medium mb-0">DTR Format</h5>
+        <div class="d-flex align-items-center">
           <!-- View All Button -->
-          <button class="btn btn-primary me-2" (click)="viewAllReports()" data-bs-toggle="modal" data-bs-target="#viewAllReportsModal">
+          <button 
+            class="btn btn-primary me-2" 
+            (click)="viewAllReports()" 
+            data-bs-toggle="modal" 
+            data-bs-target="#viewAllReportsModal">
             View All
           </button>
-      
+
           <!-- Plus Button -->
-          <button class="btn btn-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#reportModal"
-            style="font-size: 1.5rem; font-weight: 600; text-decoration: none;">+</button>
+          <button 
+            class="btn btn-outline-dark fw-bold" 
+            data-bs-toggle="modal" 
+            data-bs-target="#reportModal">
+            +
+          </button>
         </div>
       </div>
+
+      <!-- Reports Table -->
       <div *ngIf="generatedReports.length > 0; else noRecord">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th >Name</th>
-              <th style="display: none;">Start Date</th>
-              <th style="display: none;">End Date</th>
-              <th style="display: none;">Generated At</th>
-              <th >Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let report of generatedReports">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
               <tr>
-                <td>{{ getNameById(report.selectedName) }}</td>
-                <td style="display: none;">{{ report.startDate | date }}</td>
-                <td style="display: none;">{{ report.endDate | date }}</td>
-                <td style="display: none;">{{ report.createdAt | date:'short' }}</td>
-                <td> 
-                  <button (click)="viewReport(report)" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewReportModal">
-                    View
-                  </button>
-                  <button (click)="deleteReport(report._id!)" class="btn btn-danger btn-sm">
-                    Delete
-                  </button>
-                </td>
+                <th>Name</th>
+                <th class="d-none">Start Date</th>
+                <th class="d-none">End Date</th>
+                <th class="d-none">Generated At</th>
+                <th class="text-center" style="width: 180px;">Actions</th> <!-- Actions aligned to the right -->
               </tr>
-            </ng-container>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let report of generatedReports">
+                <tr>
+                  <td>{{ getNameById(report.selectedName) }}</td>
+                  <td class="d-none">{{ report.startDate | date }}</td>
+                  <td class="d-none">{{ report.endDate | date }}</td>
+                  <td class="d-none">{{ report.createdAt | date:'short' }}</td>
+                  <td class="text-center">
+                    <button 
+                      (click)="viewReport(report)" 
+                      class="btn btn-info btn-sm me-2" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#viewReportModal">
+                      View
+                    </button>
+                    <button 
+                      (click)="deleteReport(report._id!)" 
+                      class="btn btn-danger btn-sm">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <!-- No Records Template -->
       <ng-template #noRecord>
-        <div class="border p-3 text-center" style="font-weight: 600; color: #000; border-radius: 4px;">
+        <div class="border p-3 text-center fw-semibold text-muted rounded-2">
           No Record Found
         </div>
       </ng-template>
+
     </div>
   </div>
 </div>
+
 
 <!-- View Report Modal -->
 <div class="modal fade" id="viewReportModal" tabindex="-1" aria-labelledby="viewReportModalLabel" aria-hidden="true">
